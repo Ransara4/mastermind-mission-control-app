@@ -1,0 +1,721 @@
+/**
+ * Mission Control: Backup & Restore Management
+ * TypeScript Interface Definitions
+ * 
+ * This file contains all type definitions for the backup system.
+ * Use these interfaces throughout the frontend and backend.
+ */
+
+// ==============================================
+// CORE DATA TYPES
+// ==============================================
+
+export type BackupType = 'manual' | 'auto' | 'pre-restore' | 'milestone';
+
+export type BackupStatus = 
+  | 'completed'
+  | 'failed'
+  | 'partial'
+  | 'archived'
+  | 'deleted';
+
+export type RestoreStatus =
+  | 'validating'
+  | 'creating-safety-backup'
+  | 'extracting'
+  | 'restoring'
+  | 'completed'
+  | 'failed'
+  | 'rolled-back';
+
+export type RetentionPolicy = 
+  | 'keep-forever'
+  | '30-days'
+  | '90-days'
+  | '1-year';
+
+// ==============================================
+// DATABASE MODELS
+// ==============================================
+
+export interface Backup {
+  // Primary Key
+  _id: string;
+  _creationTime: number;
+  
+  // File Metadata
+  filename: string;
+  filepath: string;
+  size: number;
+  
+  // User-Editable Metadata
+  description: string;
+  tags: string[];
+  
+  // Backup Context
+  backupType: BackupType;
+  
+  // Technical Metadata
+  workspaceSize: number;
+  fileCount?: number;
+  checksum?: string;
+  compression: string;
+  
+  // Status Tracking
+  status: BackupStatus;
+  
+  // Validation
+  isValid: boolean;
+  validatedAt?: number;
+  validationError?: string;
+  
+  // Timestamps
+  createdAt: number;
+  createdBy?: string;
+  updatedAt: number;
+  
+  // Retention
+  retentionPolicy?: RetentionPolicy;
+  expiresAt?: number;
+}
+
+export interface RestoreOperation {
+  // Primary Key
+  _id: string;
+  _creationTime: number;
+  
+  // Source Backup
+  backupId: string;
+  backupFilename: string;
+  
+  // Operation Context
+  requestedBy?: string;
+  reason?: string;
+  
+  // Pre-restore Safety Backup
+  preRestoreBackupId?: string;
+  
+  // Status Tracking
+  status: RestoreStatus;
+  
+  // Progress Tracking
+  progressPercent: number;
+  currentStep: string;
+  
+  // Timing
+  startedAt: number;
+  completedAt?: number;
+  duration?: number;
+  
+  // Results
+  filesRestored?: number;
+  bytesRestored?: number;
+  error?: string;
+  logs?: string[];
+}
+
+export interface BackupMetrics {
+  // Primary Key
+  _id: string;
+  _creationTime: number;
+  
+  // Date
+  date: string; // YYYY-MM-DD
+  
+  // Backup Statistics
+  totalBackups: number;
+  totalSize: number;
+  manualBackups: number;
+  autoBackups: number;
+  
+  // Restore Statistics
+  restoreOperations: number;
+  successfulRestores: number;
+  failedRestores: number;
+  
+  // Performance Metrics
+  avgBackupSize?: number;
+  avgBackupDuration?: number;
+}
+
+// ==============================================
+// API REQUEST/RESPONSE TYPES
+// ==============================================
+
+// Create Backup
+export interface CreateBackupRequest {
+  description: string;
+  tags?: string[];
+  backupType?: BackupType;
+  retentionPolicy?: RetentionPolicy;
+}
+
+export interface CreateBackupResponse {
+  success: boolean;
+  backupId?: string;
+  filename?: string;
+  error?: string;
+}
+
+// Update Backup
+export interface UpdateBackupRequest {
+  backupId: string;
+  description?: string;
+  tags?: string[];
+  retentionPolicy?: RetentionPolicy;
+}
+
+export interface UpdateBackupResponse {
+  success: boolean;
+  error?: string;
+}
+
+// Validate Backup
+export interface ValidateBackupRequest {
+  backupId: string;
+}
+
+export interface ValidateBackupResponse {
+  valid: boolean;
+  fileCount?: number;
+  size?: number;
+  error?: string;
+}
+
+// Delete Backup
+export interface DeleteBackupRequest {
+  backupId: string;
+  deleteFile: boolean;
+}
+
+export interface DeleteBackupResponse {
+  success: boolean;
+  error?: string;
+}
+
+// Start Restore
+export interface StartRestoreRequest {
+  backupId: string;
+  reason?: string;
+  createSafetyBackup: boolean;
+}
+
+export interface StartRestoreResponse {
+  success: boolean;
+  operationId?: string;
+  error?: string;
+}
+
+// List Backups
+export interface ListBackupsRequest {
+  status?: BackupStatus;
+  backupType?: BackupType;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface ListBackupsResponse {
+  backups: Backup[];
+  total: number;
+  hasMore: boolean;
+}
+
+// Search Backups
+export interface SearchBackupsRequest {
+  query: string;
+  limit?: number;
+}
+
+export interface SearchBackupsResponse {
+  backups: Backup[];
+  total: number;
+}
+
+// ==============================================
+// UI COMPONENT PROPS
+// ==============================================
+
+// Backup List
+export interface BackupListProps {
+  backups: Backup[];
+  loading?: boolean;
+  onRestore: (backupId: string) => void;
+  onEdit: (backupId: string) => void;
+  onDelete: (backupId: string) => void;
+  onValidate: (backupId: string) => void;
+  onDownload: (backupId: string) => void;
+}
+
+// Backup Card
+export interface BackupCardProps {
+  backup: Backup;
+  onRestore: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onValidate: () => void;
+  onDownload: () => void;
+  compact?: boolean;
+}
+
+// Backup Filters
+export interface BackupFiltersProps {
+  onFilterChange: (filters: BackupFilters) => void;
+  initialFilters?: BackupFilters;
+}
+
+export interface BackupFilters {
+  search?: string;
+  status?: BackupStatus;
+  backupType?: BackupType;
+  dateFrom?: Date;
+  dateTo?: Date;
+  tags?: string[];
+  sortBy?: 'date' | 'size' | 'name';
+  sortOrder?: 'asc' | 'desc';
+}
+
+// Backup Stats
+export interface BackupStatsProps {
+  totalBackups: number;
+  totalSize: number;
+  lastBackupDate?: number;
+  nextBackupDate?: number;
+  storageGrowth?: number; // MB per week
+}
+
+// Create Backup Dialog
+export interface CreateBackupDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onSuccess: (backupId: string) => void;
+  initialDescription?: string;
+  initialTags?: string[];
+}
+
+// Restore Dialog
+export interface RestoreDialogProps {
+  backup: Backup;
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+// Restore Progress
+export interface RestoreProgressProps {
+  operationId: string;
+  onComplete: () => void;
+  onError: (error: string) => void;
+}
+
+// Backup Details
+export interface BackupDetailsProps {
+  backupId: string;
+  onRestore: () => void;
+  onDelete: () => void;
+  onUpdateDescription: (description: string) => void;
+  onUpdateTags: (tags: string[]) => void;
+}
+
+// ==============================================
+// SERVICE INTERFACES
+// ==============================================
+
+export interface IBackupService {
+  createBackup(request: CreateBackupRequest): Promise<CreateBackupResponse>;
+  updateBackup(request: UpdateBackupRequest): Promise<UpdateBackupResponse>;
+  deleteBackup(request: DeleteBackupRequest): Promise<DeleteBackupResponse>;
+  validateBackup(request: ValidateBackupRequest): Promise<ValidateBackupResponse>;
+  listBackups(request: ListBackupsRequest): Promise<ListBackupsResponse>;
+  getBackup(backupId: string): Promise<Backup | null>;
+  searchBackups(request: SearchBackupsRequest): Promise<SearchBackupsResponse>;
+}
+
+export interface IRestoreService {
+  startRestore(request: StartRestoreRequest): Promise<StartRestoreResponse>;
+  getRestoreStatus(operationId: string): Promise<RestoreOperation | null>;
+  cancelRestore(operationId: string): Promise<void>;
+  listRestoreHistory(limit?: number): Promise<RestoreOperation[]>;
+}
+
+export interface IValidationService {
+  validateBackupFile(filepath: string): Promise<ValidationResult>;
+  checkFileExists(filepath: string): Promise<boolean>;
+  calculateChecksum(filepath: string): Promise<string>;
+  verifyChecksum(filepath: string, expectedChecksum: string): Promise<boolean>;
+}
+
+export interface ValidationResult {
+  valid: boolean;
+  fileExists: boolean;
+  fileCount?: number;
+  size?: number;
+  checksum?: string;
+  errors?: string[];
+}
+
+// ==============================================
+// UTILITY TYPES
+// ==============================================
+
+export interface BackupScript {
+  description: string;
+  tags: string;
+  backupType: string;
+}
+
+export interface BackupScriptResult {
+  success: boolean;
+  filename: string;
+  filepath: string;
+  size: number;
+  fileCount: number;
+  workspaceSize: number;
+  checksum: string;
+  compression: string;
+  description: string;
+  tags: string;
+  backupType: string;
+  timestamp: number;
+  error?: string;
+}
+
+export interface RestoreScript {
+  backupFilepath: string;
+  operationId: string;
+}
+
+export interface RestoreScriptProgress {
+  percent: number;
+  message: string;
+}
+
+export interface RestoreScriptResult {
+  success: boolean;
+  filesRestored: number;
+  bytesRestored: number;
+  duration: number;
+  safetyBackupPath?: string;
+  error?: string;
+}
+
+// ==============================================
+// HELPER TYPES
+// ==============================================
+
+// Pagination
+export interface PaginationOptions {
+  page: number;
+  limit: number;
+  offset: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+}
+
+// Sort Options
+export interface SortOptions {
+  field: string;
+  order: 'asc' | 'desc';
+}
+
+// Time Range
+export interface TimeRange {
+  start: Date;
+  end: Date;
+}
+
+// File Size
+export interface FormattedFileSize {
+  value: number;
+  unit: 'B' | 'KB' | 'MB' | 'GB' | 'TB';
+  display: string;
+}
+
+// Duration
+export interface FormattedDuration {
+  milliseconds: number;
+  seconds: number;
+  minutes: number;
+  hours: number;
+  display: string;
+}
+
+// ==============================================
+// ERROR TYPES
+// ==============================================
+
+export class BackupError extends Error {
+  constructor(
+    message: string,
+    public code: BackupErrorCode,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'BackupError';
+  }
+}
+
+export enum BackupErrorCode {
+  INSUFFICIENT_SPACE = 'INSUFFICIENT_SPACE',
+  FILE_NOT_FOUND = 'FILE_NOT_FOUND',
+  CORRUPT_BACKUP = 'CORRUPT_BACKUP',
+  VALIDATION_FAILED = 'VALIDATION_FAILED',
+  SCRIPT_FAILED = 'SCRIPT_FAILED',
+  PERMISSION_DENIED = 'PERMISSION_DENIED',
+  BACKUP_IN_PROGRESS = 'BACKUP_IN_PROGRESS',
+  RESTORE_IN_PROGRESS = 'RESTORE_IN_PROGRESS',
+  INVALID_PATH = 'INVALID_PATH',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+}
+
+export class RestoreError extends Error {
+  constructor(
+    message: string,
+    public code: RestoreErrorCode,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'RestoreError';
+  }
+}
+
+export enum RestoreErrorCode {
+  BACKUP_NOT_FOUND = 'BACKUP_NOT_FOUND',
+  BACKUP_INVALID = 'BACKUP_INVALID',
+  RESTORE_FAILED = 'RESTORE_FAILED',
+  ROLLBACK_FAILED = 'ROLLBACK_FAILED',
+  SERVICE_STOP_FAILED = 'SERVICE_STOP_FAILED',
+  EXTRACTION_FAILED = 'EXTRACTION_FAILED',
+  VALIDATION_FAILED = 'VALIDATION_FAILED',
+  CANCELLED = 'CANCELLED',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+}
+
+// ==============================================
+// CONSTANTS
+// ==============================================
+
+export const BACKUP_CONSTANTS = {
+  // File paths
+  WORKSPACE_PATH: '/Users/openclaw/.openclaw/workspace',
+  BACKUP_DIR: '/Users/openclaw/.openclaw/backups',
+  
+  // File patterns
+  EXCLUDE_PATTERNS: ['node_modules', 'backups', '.next', '.DS_Store'],
+  
+  // Limits
+  MAX_DESCRIPTION_LENGTH: 500,
+  MAX_TAGS: 10,
+  MAX_TAG_LENGTH: 50,
+  MAX_BACKUPS_PER_PAGE: 50,
+  
+  // Timeouts
+  BACKUP_TIMEOUT_MS: 300000, // 5 minutes
+  RESTORE_TIMEOUT_MS: 600000, // 10 minutes
+  VALIDATION_TIMEOUT_MS: 60000, // 1 minute
+  
+  // Retention
+  DEFAULT_RETENTION_DAYS: 30,
+  MAX_RETENTION_DAYS: 365,
+  
+  // Performance
+  BACKUP_COOLDOWN_MS: 60000, // 1 minute between backups
+  
+  // Compression
+  DEFAULT_COMPRESSION: 'gzip',
+  SUPPORTED_COMPRESSIONS: ['gzip', 'bzip2', 'xz'],
+} as const;
+
+export const RESTORE_CONSTANTS = {
+  // Safety
+  AUTO_CREATE_SAFETY_BACKUP: true,
+  SAFETY_BACKUP_TTL_HOURS: 1,
+  
+  // Progress intervals
+  PROGRESS_UPDATE_INTERVAL_MS: 1000,
+  
+  // Retry
+  MAX_RESTORE_RETRIES: 3,
+  RETRY_DELAY_MS: 5000,
+} as const;
+
+// ==============================================
+// TYPE GUARDS
+// ==============================================
+
+export function isBackup(obj: any): obj is Backup {
+  return (
+    obj &&
+    typeof obj._id === 'string' &&
+    typeof obj.filename === 'string' &&
+    typeof obj.filepath === 'string' &&
+    typeof obj.size === 'number' &&
+    typeof obj.description === 'string' &&
+    Array.isArray(obj.tags)
+  );
+}
+
+export function isRestoreOperation(obj: any): obj is RestoreOperation {
+  return (
+    obj &&
+    typeof obj._id === 'string' &&
+    typeof obj.backupId === 'string' &&
+    typeof obj.status === 'string' &&
+    typeof obj.progressPercent === 'number'
+  );
+}
+
+export function isValidBackupType(type: string): type is BackupType {
+  return ['manual', 'auto', 'pre-restore', 'milestone'].includes(type);
+}
+
+export function isValidBackupStatus(status: string): status is BackupStatus {
+  return ['completed', 'failed', 'partial', 'archived', 'deleted'].includes(status);
+}
+
+export function isValidRestoreStatus(status: string): status is RestoreStatus {
+  return [
+    'validating',
+    'creating-safety-backup',
+    'extracting',
+    'restoring',
+    'completed',
+    'failed',
+    'rolled-back',
+  ].includes(status);
+}
+
+// ==============================================
+// UTILITY FUNCTIONS
+// ==============================================
+
+export function formatFileSize(bytes: number): FormattedFileSize {
+  if (bytes === 0) return { value: 0, unit: 'B', display: '0 B' };
+  
+  const k = 1024;
+  const sizes: Array<'B' | 'KB' | 'MB' | 'GB' | 'TB'> = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const value = parseFloat((bytes / Math.pow(k, i)).toFixed(2));
+  const unit = sizes[i];
+  
+  return {
+    value,
+    unit,
+    display: `${value} ${unit}`,
+  };
+}
+
+export function formatDuration(ms: number): FormattedDuration {
+  const seconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  
+  let display: string;
+  if (hours > 0) {
+    display = `${hours}h ${minutes % 60}m`;
+  } else if (minutes > 0) {
+    display = `${minutes}m ${seconds % 60}s`;
+  } else {
+    display = `${seconds}s`;
+  }
+  
+  return {
+    milliseconds: ms,
+    seconds,
+    minutes,
+    hours,
+    display,
+  };
+}
+
+export function formatRelativeTime(timestamp: number): string {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  
+  if (days > 7) return new Date(timestamp).toLocaleDateString();
+  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  if (minutes > 0) return `${minutes} min${minutes > 1 ? 's' : ''} ago`;
+  return 'Just now';
+}
+
+export function sanitizeFilename(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9-_]/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 50);
+}
+
+export function validateBackupPath(filepath: string): boolean {
+  const resolved = require('path').resolve(filepath);
+  return resolved.startsWith(BACKUP_CONSTANTS.BACKUP_DIR);
+}
+
+export function calculateRetentionExpiry(
+  createdAt: number,
+  policy: RetentionPolicy
+): number | undefined {
+  if (policy === 'keep-forever') return undefined;
+  
+  const days = parseInt(policy.split('-')[0]);
+  return createdAt + (days * 24 * 60 * 60 * 1000);
+}
+
+// ==============================================
+// EXPORT ALL TYPES
+// ==============================================
+
+export type {
+  Backup,
+  RestoreOperation,
+  BackupMetrics,
+  CreateBackupRequest,
+  CreateBackupResponse,
+  UpdateBackupRequest,
+  UpdateBackupResponse,
+  ValidateBackupRequest,
+  ValidateBackupResponse,
+  DeleteBackupRequest,
+  DeleteBackupResponse,
+  StartRestoreRequest,
+  StartRestoreResponse,
+  ListBackupsRequest,
+  ListBackupsResponse,
+  SearchBackupsRequest,
+  SearchBackupsResponse,
+  BackupListProps,
+  BackupCardProps,
+  BackupFiltersProps,
+  BackupFilters,
+  BackupStatsProps,
+  CreateBackupDialogProps,
+  RestoreDialogProps,
+  RestoreProgressProps,
+  BackupDetailsProps,
+  IBackupService,
+  IRestoreService,
+  IValidationService,
+  ValidationResult,
+  BackupScript,
+  BackupScriptResult,
+  RestoreScript,
+  RestoreScriptProgress,
+  RestoreScriptResult,
+  PaginationOptions,
+  PaginatedResponse,
+  SortOptions,
+  TimeRange,
+  FormattedFileSize,
+  FormattedDuration,
+};

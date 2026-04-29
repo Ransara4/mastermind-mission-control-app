@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Control — Task Board Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root {
+    --bg:       #080c14;
+    --sidebar:  #0d1220;
+    --panel:    #111827;
+    --panel2:   #161e2e;
+    --border:   rgba(124,105,199,0.15);
+    --border2:  rgba(124,105,199,0.25);
+    --purple:   #7C69C7;
+    --purple2:  #9d8de0;
+    --purple3:  rgba(124,105,199,0.12);
+    --pink:     #F5C3C6;
+    --pink2:    #f8d8da;
+    --text:     #f0eeff;
+    --muted:    #8b8fa8;
+    --muted2:   #5c6075;
+    --success:  #f5c842;
+    --warn:     #f0c060;
+    --danger:   #f07070;
+    --info:     #64b4ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #050810;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px;
+  }
+
+  /* ── macOS Window Chrome ── */
+  .window {
+    width: 1200px;
+    height: 720px;
+    background: var(--bg);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 40px 120px rgba(0,0,0,0.8),
+      0 0 80px rgba(124,105,199,0.08);
+  }
+
+  .titlebar {
+    height: 38px;
+    background: var(--sidebar);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .titlebar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+  }
+
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.red    { background: #ff5f57; }
+  .dot.yellow { background: #febc2e; }
+  .dot.green  { background: #28c840; }
+
+  /* ── Layout ── */
+  .app-body { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 200px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+
+  .logo-orb {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--purple) 0%, #4e3a8e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 14px rgba(124,105,199,0.4);
+    font-size: 19px;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .logo-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 1px;
+  }
+
+  .nav-section { padding: 0 8px; flex: 1; }
+
+  .nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    padding: 10px 8px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.15s;
+    position: relative;
+    margin-bottom: 1px;
+  }
+
+  .nav-item:hover { background: rgba(124,105,199,0.1); color: var(--text); }
+
+  .nav-item.active {
+    background: rgba(124,105,199,0.15);
+    color: var(--purple2);
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 16px;
+    background: var(--purple);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .nav-icon {
+    width: 16px; height: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; opacity: 0.7;
+  }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .nav-icon svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.75; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--purple);
+    color: white;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .nav-badge.gold {
+    background: rgba(245,200,66,0.15);
+    color: var(--success);
+  }
+
+  .sidebar-footer { display: none; }
+
+  /* ── Collapsible nav groups ── */
+  .nav-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px 5px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .nav-group-header:hover .nav-label { color: var(--muted); }
+
+  .nav-group-chevron {
+    color: var(--muted2);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .nav-group-chevron svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2.5; }
+  .nav-group-chevron.open { transform: rotate(90deg); }
+
+  .nav-children {
+    padding-left: 24px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease;
+  }
+  .nav-children.open { max-height: 300px; }
+
+  .nav-child {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11.5px;
+    color: var(--muted2);
+    transition: all 0.15s;
+    position: relative;
+  }
+  .nav-child:hover { background: rgba(124,105,199,0.08); color: var(--muted); }
+  .nav-child.active { color: var(--purple2); }
+  .nav-child::before {
+    content: '';
+    position: absolute;
+    left: -10px; top: 50%;
+    transform: translateY(-50%);
+    width: 1px; height: 60%;
+    background: var(--border2);
+  }
+  .nav-child-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .nav-child.active .nav-child-dot { opacity: 1; background: var(--purple); }
+
+  /* ── Main Content ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 60% 40% at 70% 10%, rgba(124,105,199,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 90%, rgba(245,195,198,0.03) 0%, transparent 70%),
+      var(--bg);
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    padding: 20px 28px 0;
+    flex-shrink: 0;
+  }
+
+  .page-title-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 28px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 280px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    display: flex;
+  }
+  .search-icon svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 1.75; }
+
+  .search-input {
+    width: 100%;
+    padding: 7px 10px 7px 30px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,105,199,0.1); }
+
+  .filter-select {
+    padding: 7px 28px 7px 10px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b8fa8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    min-width: 130px;
+  }
+  .filter-select option { background: #1a2030; }
+
+  .toolbar-spacer { flex: 1; }
+
+  .btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 7px 13px;
+    border-radius: 8px;
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px; font-weight: 500;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 1.75; }
+
+  .btn-ghost {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .btn-ghost:hover { background: var(--panel2); border-color: var(--border2); color: var(--text); }
+
+  .btn-purple {
+    background: var(--purple);
+    color: white;
+  }
+  .btn-purple:hover { background: #6a58b5; }
+
+  .btn-gold {
+    background: rgba(245,200,66,0.1);
+    border: 1px solid rgba(245,200,66,0.2);
+    color: var(--success);
+  }
+  .btn-gold:hover { background: rgba(245,200,66,0.18); }
+
+  /* ── Kanban Board ── */
+  .board {
+    flex: 1;
+    display: flex;
+    gap: 14px;
+    padding: 20px 28px 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .board::-webkit-scrollbar { height: 4px; }
+  .board::-webkit-scrollbar-track { background: transparent; }
+  .board::-webkit-scrollbar-thumb { background: rgba(124,105,199,0.3); border-radius: 2px; }
+
+  /* ── Column ── */
+  .column {
+    width: 252px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px 10px;
+  }
+
+  .col-title-wrap { display: flex; align-items: center; gap: 8px; }
+
+  .col-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .col-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  .col-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--muted2);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 1px 7px;
+    border-radius: 20px;
+  }
+
+  .col-add {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+    border: none; cursor: pointer;
+    background: transparent;
+    color: var(--muted2);
+    transition: all 0.15s;
+  }
+  .col-add:hover { background: var(--purple3); color: var(--purple2); }
+  .col-add svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; }
+
+  .col-body {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .col-body::-webkit-scrollbar { width: 3px; }
+  .col-body::-webkit-scrollbar-track { background: transparent; }
+  .col-body::-webkit-scrollbar-thumb { background: rgba(124,105,199,0.25); border-radius: 2px; }
+
+  .col-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px;
+    border-radius: 7px;
+    border: 1px dashed rgba(124,105,199,0.2);
+    background: transparent;
+    color: var(--muted2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .col-add-btn:hover { border-color: var(--purple); color: var(--purple2); background: var(--purple3); }
+  .col-add-btn svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2; }
+
+  /* ── Card ── */
+  .card {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  .card:hover {
+    border-color: var(--border2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+  }
+
+  .card-title {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-labels {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+  .label-purple { background: rgba(124,105,199,0.15); color: var(--purple2); }
+  .label-pink   { background: rgba(245,195,198,0.12); color: #e8a0a4; }
+  .label-gold   { background: rgba(245,200,66,0.12); color: #d4a820; }
+  .label-blue   { background: rgba(100,180,255,0.12); color: #64b4ff; }
+  .label-red    { background: rgba(240,112,112,0.12); color: #f07070; }
+  .label-muted  { background: rgba(139,143,168,0.1); color: var(--muted); }
+
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .card-meta { display: flex; align-items: center; gap: 8px; }
+
+  .priority-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .p-high   { background: #f07070; box-shadow: 0 0 5px rgba(240,112,112,0.4); }
+  .p-medium { background: var(--warn); }
+  .p-low    { background: var(--muted2); }
+
+  .card-due {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted2);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .card-due svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 1.75; }
+  .card-due.overdue { color: var(--danger); }
+
+  .card-project {
+    font-size: 10px;
+    color: var(--muted2);
+    font-family: 'DM Mono', monospace;
+    background: var(--panel);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .executor-badge {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .executor-badge.running {
+    background: rgba(100,180,255,0.1);
+    color: var(--info);
+    border: 1px solid rgba(100,180,255,0.2);
+  }
+  .executor-badge.done {
+    background: rgba(245,200,66,0.1);
+    color: var(--success);
+    border: 1px solid rgba(245,200,66,0.2);
+  }
+  .executor-badge svg { width: 9px; height: 9px; stroke: currentColor; stroke-width: 2; }
+
+  /* ── Add Column btn ── */
+  .add-column {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+  }
+
+  .add-column-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px dashed rgba(124,105,199,0.2);
+    background: transparent;
+    color: var(--muted2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .add-column-btn:hover { border-color: var(--purple); color: var(--purple2); background: var(--purple3); }
+  .add-column-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; }
+
+  /* ── Modal overlay ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+    z-index: 100;
+  }
+
+  .modal {
+    width: 480px;
+    background: var(--panel);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 40px rgba(124,105,199,0.1);
+  }
+
+  .modal-header {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(124,105,199,0.1) 0%, rgba(245,195,198,0.04) 100%);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 800;
+    color: var(--text);
+  }
+
+  .modal-close {
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px; border: none;
+    background: transparent; color: var(--muted);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .modal-close:hover { background: rgba(240,112,112,0.1); color: var(--danger); }
+  .modal-close svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; }
+
+  .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+
+  .field-label {
+    font-size: 11px; font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 5px;
+  }
+
+  .field-input {
+    width: 100%;
+    padding: 8px 12px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+  }
+  .field-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,105,199,0.1); }
+  .field-input::placeholder { color: var(--muted2); }
+
+  .field-textarea {
+    resize: none; height: 72px; line-height: 1.5;
+  }
+
+  .modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  }
+
+  /* ── Spinning animation for executor btn ── */
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .spin { animation: spin 1s linear infinite; }
+</style>
+</head>
+<body>
+
+<div class="window">
+
+  <!-- Title Bar -->
+  <div class="titlebar">
+    <div class="dot red"></div>
+    <div class="dot yellow"></div>
+    <div class="dot green"></div>
+    <span class="titlebar-title">Mission Control</span>
+  </div>
+
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-orb">✦</div>
+        <div>
+          <div class="logo-text">Mission Control</div>
+          <div class="logo-sub">JOCHE AI SPACE OS</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+
+        <!-- Workspace group -->
+        <div class="nav-group-header" onclick="toggleGroup('workspace')">
+          <span class="nav-label" style="padding:0;">Workspace</span>
+          <span class="nav-group-chevron open" id="chev-workspace"><i data-lucide="chevron-right"></i></span>
+        </div>
+        <div class="nav-children open" id="grp-workspace" style="padding-left:0;">
+          <div class="nav-item active">
+            <span class="nav-icon" data-lucide="layout-kanban"></span>
+            Tasks
+            <span class="nav-badge">14</span>
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="calendar"></span>
+            Calendar
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="bar-chart-2"></span>
+            Daily Summary
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="zap"></span>
+            Scrooge
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="brain"></span>
+            Memory
+          </div>
+        </div>
+
+        <div id="grp-biz" style="padding-left:0;">
+          <div class="nav-item" onclick="toggleChildren('mm')">
+            <span class="nav-icon" data-lucide="users"></span>
+            Masterminds
+            <span class="nav-group-chevron open" id="chev-mm" style="margin-left:auto;"><i data-lucide="chevron-right"></i></span>
+          </div>
+          <div class="nav-children open" id="grp-mm">
+            <div class="nav-child"><span class="nav-child-dot"></span>Participants</div>
+            <div class="nav-child"><span class="nav-child-dot"></span>Sessions</div>
+            <div class="nav-child"><span class="nav-child-dot"></span>Payments</div>
+          </div>
+
+          <div class="nav-item" onclick="toggleChildren('rio')">
+            <span class="nav-icon" data-lucide="message-circle"></span>
+            Rio
+            <span class="nav-group-chevron open" id="chev-rio" style="margin-left:auto;"><i data-lucide="chevron-right"></i></span>
+          </div>
+          <div class="nav-children open" id="grp-rio">
+            <div class="nav-child"><span class="nav-child-dot"></span>Onboarding Guide</div>
+            <div class="nav-child"><span class="nav-child-dot"></span>KB Editor</div>
+            <div class="nav-child"><span class="nav-child-dot"></span>ICPs</div>
+          </div>
+
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="trending-up"></span>
+            Polymarket
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="shopping-bag"></span>
+            Gumroad
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="map"></span>
+            Connection Map
+          </div>
+        </div>
+
+        <!-- Finance group -->
+        <div class="nav-group-header" onclick="toggleGroup('finance')">
+          <span class="nav-label" style="padding:0;">Finance</span>
+          <span class="nav-group-chevron open" id="chev-finance"><i data-lucide="chevron-right"></i></span>
+        </div>
+        <div class="nav-children open" id="grp-finance" style="padding-left:0;">
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="landmark"></span>
+            Bank Accounts
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="receipt"></span>
+            Mandiri
+          </div>
+          <div class="nav-item">
+            <span class="nav-icon" data-lucide="credit-card"></span>
+            Stripe
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sidebar-footer"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+      <!-- Page Title -->
+      <div class="page-header">
+        <div class="page-title-row">
+          <span class="page-title">Task Board</span>
+          <span class="page-subtitle">14 cards · 4 lists</span>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span class="search-icon" data-lucide="search"></span>
+          <input class="search-input" type="text" placeholder="Search cards...">
+        </div>
+
+        <select class="filter-select">
+          <option>All Projects</option>
+          <option>Rio</option>
+          <option>Mastermind</option>
+          <option>Polymarket</option>
+          <option>Connection Map</option>
+        </select>
+
+        <div class="toolbar-spacer"></div>
+
+        <button class="btn btn-ghost" id="btn-new-list">
+          <i data-lucide="layout-list"></i>
+          New List
+        </button>
+
+        <button class="btn btn-ghost" id="btn-refresh">
+          <i data-lucide="refresh-cw"></i>
+          Refresh
+        </button>
+
+        <button class="btn btn-gold" id="btn-executor">
+          <i data-lucide="play"></i>
+          Run Executor
+        </button>
+
+        <button class="btn btn-purple" id="btn-add-card">
+          <i data-lucide="plus"></i>
+          Add Card
+        </button>
+      </div>
+
+      <!-- Kanban Board -->
+      <div class="board">
+
+        <!-- Column: Backlog -->
+        <div class="column">
+          <div class="col-header">
+            <div class="col-title-wrap">
+              <div class="col-dot" style="background:#8b8fa8;"></div>
+              <span class="col-title">Backlog</span>
+              <span class="col-count">4</span>
+            </div>
+            <button class="col-add"><i data-lucide="plus"></i></button>
+          </div>
+          <div class="col-body">
+
+            <div class="card">
+              <div class="card-title">Improve daily summary action extraction</div>
+              <div class="card-desc">Fix extractAction() to grab complete sentences starting with action verbs, not fragments.</div>
+              <div class="card-labels">
+                <span class="label label-purple">mission-control</span>
+                <span class="label label-muted">daily-summary</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-medium"></div>
+                  <span class="card-due"><i data-lucide="calendar"></i> Mar 28</span>
+                </div>
+                <span class="card-project">MC</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Add Tokopedia product comparison view</div>
+              <div class="card-desc">Side-by-side comparison modal for search results with IDR + USD pricing.</div>
+              <div class="card-labels">
+                <span class="label label-blue">tokopedia</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-low"></div>
+                  <span class="card-due"><i data-lucide="calendar"></i> Apr 2</span>
+                </div>
+                <span class="card-project">Passive</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Set up Heliconia Cantik Shopee storefront</div>
+              <div class="card-labels">
+                <span class="label label-pink">heliconia</span>
+                <span class="label label-gold">revenue</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-low"></div>
+                </div>
+                <span class="card-project">HC</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Stripe promo code for April mastermind cohort</div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-medium"></div>
+                  <span class="card-due overdue"><i data-lucide="calendar"></i> Mar 20</span>
+                </div>
+                <span class="card-project">MM</span>
+              </div>
+            </div>
+
+            <button class="col-add-btn"><i data-lucide="plus"></i> Add Card</button>
+          </div>
+        </div>
+
+        <!-- Column: Claude Code -->
+        <div class="column">
+          <div class="col-header">
+            <div class="col-title-wrap">
+              <div class="col-dot" style="background:#7C69C7; box-shadow: 0 0 6px rgba(124,105,199,0.6);"></div>
+              <span class="col-title">Claude Code</span>
+              <span class="col-count">5</span>
+            </div>
+            <button class="col-add"><i data-lucide="plus"></i></button>
+          </div>
+          <div class="col-body">
+
+            <div class="card" style="border-color: rgba(124,105,199,0.3);">
+              <div class="card-title">MC dark theme reskin — layout + sidebar shell</div>
+              <div class="card-desc">Flip MC from light cream to dark navy. Start with globals.css + layout.tsx + Tailwind tokens.</div>
+              <div class="card-labels">
+                <span class="label label-purple">mission-control</span>
+                <span class="label label-purple">design</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-high"></div>
+                  <span class="card-due"><i data-lucide="calendar"></i> Mar 25</span>
+                </div>
+                <div class="executor-badge running"><i data-lucide="loader" class="spin"></i> Running</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Rio onboarding guide — fix wa.me widget link</div>
+              <div class="card-desc">Support +16462092333 in the floating WhatsApp button on rio-onboarding.vercel.app</div>
+              <div class="card-labels">
+                <span class="label label-blue">rio</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-high"></div>
+                  <span class="card-due overdue"><i data-lucide="calendar"></i> Mar 22</span>
+                </div>
+                <span class="card-project">Rio</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Polymarket city snipe — add 3 new WU stations</div>
+              <div class="card-labels">
+                <span class="label label-gold">polymarket</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-medium"></div>
+                </div>
+                <div class="executor-badge done"><i data-lucide="check"></i> Done</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">ManyChat AutoFlow — inject content for giveaway</div>
+              <div class="card-labels">
+                <span class="label label-pink">manychat</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-medium"></div>
+                  <span class="card-due"><i data-lucide="calendar"></i> Mar 27</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Update WABA KB — Meta direct provider framing</div>
+              <div class="card-labels">
+                <span class="label label-blue">rio</span>
+                <span class="label label-muted">kb</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-low"></div>
+                </div>
+                <span class="card-project">Rio</span>
+              </div>
+            </div>
+
+            <button class="col-add-btn"><i data-lucide="plus"></i> Add Card</button>
+          </div>
+        </div>
+
+        <!-- Column: In Progress -->
+        <div class="column">
+          <div class="col-header">
+            <div class="col-title-wrap">
+              <div class="col-dot" style="background:#64b4ff; box-shadow: 0 0 6px rgba(100,180,255,0.4);"></div>
+              <span class="col-title">In Progress</span>
+              <span class="col-count">3</span>
+            </div>
+            <button class="col-add"><i data-lucide="plus"></i></button>
+          </div>
+          <div class="col-body">
+
+            <div class="card">
+              <div class="card-title">Connection Map — April workshop prep deck</div>
+              <div class="card-desc">Remotion slide deck for Apr 12 CM workshop. Scenes 1–4 complete, need 5–6.</div>
+              <div class="card-labels">
+                <span class="label label-purple">connection-map</span>
+                <span class="label label-gold">revenue</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-high"></div>
+                  <span class="card-due"><i data-lucide="calendar"></i> Apr 5</span>
+                </div>
+                <span class="card-project">CM</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Mastermind wrap-up pipeline — Zoom router fix</div>
+              <div class="card-labels">
+                <span class="label label-purple">mastermind</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-medium"></div>
+                </div>
+                <span class="card-project">MM</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">MiroFish — dual UI persistence bug on restart</div>
+              <div class="card-labels">
+                <span class="label label-blue">mirofish</span>
+                <span class="label label-red">bug</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-high"></div>
+                  <span class="card-due"><i data-lucide="calendar"></i> Mar 24</span>
+                </div>
+              </div>
+            </div>
+
+            <button class="col-add-btn"><i data-lucide="plus"></i> Add Card</button>
+          </div>
+        </div>
+
+        <!-- Column: Done -->
+        <div class="column">
+          <div class="col-header">
+            <div class="col-title-wrap">
+              <div class="col-dot" style="background:#f5c842; box-shadow: 0 0 6px rgba(245,200,66,0.4);"></div>
+              <span class="col-title">Done</span>
+              <span class="col-count">2</span>
+            </div>
+            <button class="col-add"><i data-lucide="plus"></i></button>
+          </div>
+          <div class="col-body" style="opacity:0.7;">
+
+            <div class="card">
+              <div class="card-title">Fix widget wa.me link — +16462092333</div>
+              <div class="card-labels">
+                <span class="label label-blue">rio</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-low"></div>
+                </div>
+                <div class="executor-badge done"><i data-lucide="check"></i> Done</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">WABA KB overhaul — vision fix + Rio framing</div>
+              <div class="card-labels">
+                <span class="label label-blue">rio</span>
+                <span class="label label-muted">34 files</span>
+              </div>
+              <div class="card-footer">
+                <div class="card-meta">
+                  <div class="priority-dot p-low"></div>
+                </div>
+                <div class="executor-badge done"><i data-lucide="check"></i> Done</div>
+              </div>
+            </div>
+
+            <button class="col-add-btn"><i data-lucide="plus"></i> Add Card</button>
+          </div>
+        </div>
+
+        <!-- Add Column -->
+        <div class="add-column">
+          <button class="add-column-btn">
+            <i data-lucide="plus"></i>
+            Add List
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal (shown for reference) -->
+<div class="modal-overlay" id="modal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">New Card</span>
+      <button class="modal-close" id="modal-close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="field-label">Title</div>
+        <input class="field-input" type="text" placeholder="What needs to be done?">
+      </div>
+      <div>
+        <div class="field-label">Description</div>
+        <textarea class="field-input field-textarea" placeholder="Add more detail..."></textarea>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <div style="flex:1;">
+          <div class="field-label">Priority</div>
+          <select class="field-input" style="appearance:none;cursor:pointer;">
+            <option>High</option>
+            <option selected>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+        <div style="flex:1;">
+          <div class="field-label">Project</div>
+          <select class="field-input" style="appearance:none;cursor:pointer;">
+            <option>— none —</option>
+            <option>Rio</option>
+            <option>Mastermind</option>
+            <option>Polymarket</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+      <button class="btn btn-purple">Create Card</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  // Show/hide modal demo
+  document.getElementById('btn-add-card').addEventListener('click', () => {
+    document.getElementById('modal').style.display = 'flex';
+  });
+  document.getElementById('modal-close').addEventListener('click', () => {
+    document.getElementById('modal').style.display = 'none';
+  });
+  document.getElementById('modal-cancel').addEventListener('click', () => {
+    document.getElementById('modal').style.display = 'none';
+  });
+  document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modal'))
+      document.getElementById('modal').style.display = 'none';
+  });
+
+  // Collapsible nav groups
+  function toggleGroup(id) {
+    const grp = document.getElementById('grp-' + id);
+    const chev = document.getElementById('chev-' + id);
+    const isOpen = grp.classList.contains('open');
+    grp.classList.toggle('open', !isOpen);
+    chev.classList.toggle('open', !isOpen);
+  }
+  function toggleChildren(id) {
+    toggleGroup(id);
+  }
+
+  // Executor btn spin demo
+  const execBtn = document.getElementById('btn-executor');
+  let running = false;
+  execBtn.addEventListener('click', () => {
+    running = !running;
+    if (running) {
+      execBtn.innerHTML = '<i data-lucide="loader"></i> Running...';
+      execBtn.style.opacity = '0.7';
+    } else {
+      execBtn.innerHTML = '<i data-lucide="play"></i> Run Executor';
+      execBtn.style.opacity = '1';
+    }
+    lucide.createIcons();
+    if (running) {
+      execBtn.querySelector('[data-lucide="loader"]').style.animation = 'spin 1s linear infinite';
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+{
+  "data": [
+    {
+      "key": "2020-06",
+      "month": "Jun '20",
+      "income": 0,
+      "expenses": 43837,
+      "profit": -43837
+    },
+    {
+      "key": "2020-07",
+      "month": "Jul '20",
+      "income": 0,
+      "expenses": 6322,
+      "profit": -6322
+    },
+    {
+      "key": "2020-08",
+      "month": "Aug '20",
+      "income": 0,
+      "expenses": 2958,
+      "profit": -2958
+    },
+    {
+      "key": "2020-09",
+      "month": "Sep '20",
+      "income": 0,
+      "expenses": 6625,
+      "profit": -6625
+    },
+    {
+      "key": "2020-10",
+      "month": "Oct '20",
+      "income": 0,
+      "expenses": 5240,
+      "profit": -5240
+    },
+    {
+      "key": "2020-11",
+      "month": "Nov '20",
+      "income": 0,
+      "expenses": 4406,
+      "profit": -4406
+    },
+    {
+      "key": "2020-12",
+      "month": "Dec '20",
+      "income": 1553,
+      "expenses": 688,
+      "profit": 865
+    },
+    {
+      "key": "2021-01",
+      "month": "Jan '21",
+      "income": 1735,
+      "expenses": 1528,
+      "profit": 207
+    },
+    {
+      "key": "2021-02",
+      "month": "Feb '21",
+      "income": 1799,
+      "expenses": 577,
+      "profit": 1222
+    },
+    {
+      "key": "2021-03",
+      "month": "Mar '21",
+      "income": 1600,
+      "expenses": 369,
+      "profit": 1231
+    },
+    {
+      "key": "2021-04",
+      "month": "Apr '21",
+      "income": 1583,
+      "expenses": 459,
+      "profit": 1124
+    },
+    {
+      "key": "2021-05",
+      "month": "May '21",
+      "income": 2006,
+      "expenses": 505,
+      "profit": 1501
+    },
+    {
+      "key": "2021-06",
+      "month": "Jun '21",
+      "income": 4904,
+      "expenses": 2987,
+      "profit": 1917
+    },
+    {
+      "key": "2021-07",
+      "month": "Jul '21",
+      "income": 1587,
+      "expenses": 295,
+      "profit": 1292
+    },
+    {
+      "key": "2021-08",
+      "month": "Aug '21",
+      "income": 2314,
+      "expenses": 800,
+      "profit": 1514
+    },
+    {
+      "key": "2021-09",
+      "month": "Sep '21",
+      "income": 1895,
+      "expenses": 1253,
+      "profit": 642
+    },
+    {
+      "key": "2021-10",
+      "month": "Oct '21",
+      "income": 844,
+      "expenses": 2932,
+      "profit": -2088
+    },
+    {
+      "key": "2021-11",
+      "month": "Nov '21",
+      "income": 3226,
+      "expenses": 780,
+      "profit": 2446
+    },
+    {
+      "key": "2021-12",
+      "month": "Dec '21",
+      "income": 0,
+      "expenses": 1148,
+      "profit": -1148
+    },
+    {
+      "key": "2022-01",
+      "month": "Jan '22",
+      "income": 1120,
+      "expenses": 1206,
+      "profit": -86
+    },
+    {
+      "key": "2022-02",
+      "month": "Feb '22",
+      "income": 1606,
+      "expenses": 1135,
+      "profit": 471
+    },
+    {
+      "key": "2022-03",
+      "month": "Mar '22",
+      "income": 1601,
+      "expenses": 670,
+      "profit": 931
+    },
+    {
+      "key": "2022-04",
+      "month": "Apr '22",
+      "income": 1600,
+      "expenses": 2958,
+      "profit": -1358
+    },
+    {
+      "key": "2022-05",
+      "month": "May '22",
+      "income": 4192,
+      "expenses": 2745,
+      "profit": 1447
+    },
+    {
+      "key": "2022-06",
+      "month": "Jun '22",
+      "income": 1624,
+      "expenses": 18993,
+      "profit": -17369
+    },
+    {
+      "key": "2022-07",
+      "month": "Jul '22",
+      "income": 5580,
+      "expenses": 1172,
+      "profit": 4408
+    },
+    {
+      "key": "2022-08",
+      "month": "Aug '22",
+      "income": 5222,
+      "expenses": 1461,
+      "profit": 3761
+    },
+    {
+      "key": "2022-09",
+      "month": "Sep '22",
+      "income": 4462,
+      "expenses": 757,
+      "profit": 3705
+    },
+    {
+      "key": "2022-10",
+      "month": "Oct '22",
+      "income": 3755,
+      "expenses": 2650,
+      "profit": 1105
+    },
+    {
+      "key": "2022-11",
+      "month": "Nov '22",
+      "income": 3758,
+      "expenses": 1053,
+      "profit": 2705
+    },
+    {
+      "key": "2022-12",
+      "month": "Dec '22",
+      "income": 9770,
+      "expenses": 834,
+      "profit": 8936
+    },
+    {
+      "key": "2023-01",
+      "month": "Jan '23",
+      "income": 825,
+      "expenses": 806,
+      "profit": 19
+    },
+    {
+      "key": "2023-02",
+      "month": "Feb '23",
+      "income": 0,
+      "expenses": 1047,
+      "profit": -1047
+    },
+    {
+      "key": "2023-03",
+      "month": "Mar '23",
+      "income": 6443,
+      "expenses": 1544,
+      "profit": 4899
+    },
+    {
+      "key": "2023-04",
+      "month": "Apr '23",
+      "income": 1414,
+      "expenses": 834,
+      "profit": 580
+    },
+    {
+      "key": "2023-05",
+      "month": "May '23",
+      "income": 2922,
+      "expenses": 926,
+      "profit": 1996
+    },
+    {
+      "key": "2023-06",
+      "month": "Jun '23",
+      "income": 3810,
+      "expenses": 903,
+      "profit": 2907
+    },
+    {
+      "key": "2023-07",
+      "month": "Jul '23",
+      "income": 2456,
+      "expenses": 1580,
+      "profit": 876
+    },
+    {
+      "key": "2023-08",
+      "month": "Aug '23",
+      "income": 3537,
+      "expenses": 3316,
+      "profit": 221
+    },
+    {
+      "key": "2023-09",
+      "month": "Sep '23",
+      "income": 4139,
+      "expenses": 1483,
+      "profit": 2656
+    },
+    {
+      "key": "2023-10",
+      "month": "Oct '23",
+      "income": 5654,
+      "expenses": 1690,
+      "profit": 3964
+    },
+    {
+      "key": "2023-11",
+      "month": "Nov '23",
+      "income": 1837,
+      "expenses": 1444,
+      "profit": 393
+    },
+    {
+      "key": "2023-12",
+      "month": "Dec '23",
+      "income": 0,
+      "expenses": 1340,
+      "profit": -1340
+    },
+    {
+      "key": "2024-01",
+      "month": "Jan '24",
+      "income": 1930,
+      "expenses": 1542,
+      "profit": 388
+    },
+    {
+      "key": "2024-02",
+      "month": "Feb '24",
+      "income": 1922,
+      "expenses": 1233,
+      "profit": 689
+    },
+    {
+      "key": "2024-03",
+      "month": "Mar '24",
+      "income": 1921,
+      "expenses": 891,
+      "profit": 1030
+    },
+    {
+      "key": "2024-04",
+      "month": "Apr '24",
+      "income": 1868,
+      "expenses": 816,
+      "profit": 1052
+    },
+    {
+      "key": "2024-05",
+      "month": "May '24",
+      "income": 1874,
+      "expenses": 812,
+      "profit": 1062
+    },
+    {
+      "key": "2024-06",
+      "month": "Jun '24",
+      "income": 1820,
+      "expenses": 779,
+      "profit": 1041
+    },
+    {
+      "key": "2024-07",
+      "month": "Jul '24",
+      "income": 1132,
+      "expenses": 1036,
+      "profit": 96
+    },
+    {
+      "key": "2024-08",
+      "month": "Aug '24",
+      "income": 4574,
+      "expenses": 1330,
+      "profit": 3244
+    },
+    {
+      "key": "2024-09",
+      "month": "Sep '24",
+      "income": 0,
+      "expenses": 19885,
+      "profit": -19885
+    },
+    {
+      "key": "2024-10",
+      "month": "Oct '24",
+      "income": 1764,
+      "expenses": 1339,
+      "profit": 425
+    },
+    {
+      "key": "2024-11",
+      "month": "Nov '24",
+      "income": 1513,
+      "expenses": 1647,
+      "profit": -134
+    },
+    {
+      "key": "2024-12",
+      "month": "Dec '24",
+      "income": 567,
+      "expenses": 1181,
+      "profit": -614
+    },
+    {
+      "key": "2025-01",
+      "month": "Jan '25",
+      "income": 946,
+      "expenses": 955,
+      "profit": -9
+    },
+    {
+      "key": "2025-02",
+      "month": "Feb '25",
+      "income": 3628,
+      "expenses": 1292,
+      "profit": 2336
+    },
+    {
+      "key": "2025-03",
+      "month": "Mar '25",
+      "income": 2440,
+      "expenses": 1559,
+      "profit": 881
+    },
+    {
+      "key": "2025-04",
+      "month": "Apr '25",
+      "income": 817,
+      "expenses": 1495,
+      "profit": -678
+    },
+    {
+      "key": "2025-05",
+      "month": "May '25",
+      "income": 1670,
+      "expenses": 1349,
+      "profit": 321
+    },
+    {
+      "key": "2025-06",
+      "month": "Jun '25",
+      "income": 1107,
+      "expenses": 922,
+      "profit": 185
+    },
+    {
+      "key": "2025-07",
+      "month": "Jul '25",
+      "income": 2097,
+      "expenses": 450,
+      "profit": 1647
+    },
+    {
+      "key": "2025-08",
+      "month": "Aug '25",
+      "income": 3011,
+      "expenses": 740,
+      "profit": 2271
+    },
+    {
+      "key": "2025-09",
+      "month": "Sep '25",
+      "income": 2504,
+      "expenses": 823,
+      "profit": 1681
+    },
+    {
+      "key": "2025-10",
+      "month": "Oct '25",
+      "income": 1677,
+      "expenses": 808,
+      "profit": 869
+    },
+    {
+      "key": "2025-11",
+      "month": "Nov '25",
+      "income": 392,
+      "expenses": 462,
+      "profit": -70
+    },
+    {
+      "key": "2025-12",
+      "month": "Dec '25",
+      "income": 3531,
+      "expenses": 457,
+      "profit": 3074
+    },
+    {
+      "key": "2026-01",
+      "month": "Jan '26",
+      "income": 594,
+      "expenses": 1446,
+      "profit": -852
+    },
+    {
+      "key": "2026-02",
+      "month": "Feb '26",
+      "income": 999,
+      "expenses": 0,
+      "profit": 999
+    },
+    {
+      "key": "2026-03",
+      "month": "Mar '26",
+      "income": 59,
+      "expenses": 0,
+      "profit": 59
+    }
+  ],
+  "lastCalculated": "2026-03-25T08:51:02.375Z"
+}

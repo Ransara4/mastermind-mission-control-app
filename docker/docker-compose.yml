@@ -1,0 +1,74 @@
+services:
+
+  # ─── Mission Control ──────────────────────────────────────────────────────
+  mission-control:
+    build:
+      context: ..
+      dockerfile: docker/mission-control.Dockerfile
+    ports:
+      - "${MC_PORT:-3000}:3000"
+    volumes:
+      - allsorted-data:/data
+      - allsorted-config:/config
+      - allsorted-backups:/backups
+    env_file: .env
+    environment:
+      - ALLSORTED_DATA_DIR=/data
+      - ALLSORTED_CONFIG_DIR=/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ─── Gateway (Telegram router) ────────────────────────────────────────────
+  gateway:
+    build:
+      context: ..
+      dockerfile: docker/gateway.Dockerfile
+    volumes:
+      - allsorted-data:/data
+      - allsorted-config:/config
+    env_file: .env
+    depends_on:
+      mission-control:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─── Cron Runner ──────────────────────────────────────────────────────────
+  cron-runner:
+    build:
+      context: ..
+      dockerfile: docker/cron-runner.Dockerfile
+    volumes:
+      - allsorted-data:/data
+      - allsorted-config:/config
+    env_file: .env
+    environment:
+      - MC_URL=http://mission-control:3000
+      - JOBS_FILE=/config/jobs.json
+    depends_on:
+      mission-control:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ─── Playwright MCP ───────────────────────────────────────────────────────
+  playwright-mcp:
+    image: mcr.microsoft.com/playwright/mcp
+    ports:
+      - "8931:8931"
+    command: >
+      --headless
+      --browser chromium
+      --no-sandbox
+      --disable-dev-shm-usage
+      --port 8931
+      --host 0.0.0.0
+    restart: unless-stopped
+
+# ─── Named Volumes ────────────────────────────────────────────────────────
+volumes:
+  allsorted-data:
+  allsorted-config:
+  allsorted-backups:

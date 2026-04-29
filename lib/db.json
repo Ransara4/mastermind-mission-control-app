@@ -1,0 +1,361 @@
+{
+  "columns": [
+    {
+      "id": "backlog",
+      "title": "Backlog",
+      "color": "slate"
+    },
+    {
+      "id": "claude-code-todo",
+      "title": "AI (Auto Execute)",
+      "color": "amber"
+    },
+    {
+      "id": "doing",
+      "title": "Doing",
+      "color": "blue"
+    },
+    {
+      "id": "human-must-do",
+      "title": "Human Must Do",
+      "color": "orange"
+    },
+    {
+      "id": "review",
+      "title": "Review",
+      "color": "purple"
+    },
+    {
+      "id": "done",
+      "title": "Done",
+      "color": "green"
+    },
+    {
+      "id": "icebox",
+      "title": "Icebox",
+      "color": "pink"
+    }
+  ],
+  "cards": [
+    {
+      "_id": "guide-backlog",
+      "title": "About this column",
+      "description": "The Backlog holds tasks you want to do eventually but haven't started yet. Drop ideas here and prioritize them when you're ready.",
+      "column": "backlog",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "guide-ai",
+      "title": "About this column",
+      "description": "Phase 2: Cards here will be picked up by Claude Code automatically. Wiring this up is what we cover next session.",
+      "column": "claude-code-todo",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "guide-doing",
+      "title": "About this column",
+      "description": "Tasks currently in progress. When you or the AI starts working on something, it moves here.",
+      "column": "doing",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "guide-human",
+      "title": "About this column",
+      "description": "When the AI cannot do something on its own, it puts a card here. These tasks require human action: approvals, logins, phone calls, or anything that needs your personal touch.",
+      "column": "human-must-do",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "guide-review",
+      "title": "About this column",
+      "description": "Completed tasks that need your review before they're considered done. Check the work, approve it, and move it to Done.",
+      "column": "review",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "guide-done",
+      "title": "About this column",
+      "description": "Finished tasks. Everything here has been completed and verified.",
+      "column": "done",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "guide-icebox",
+      "title": "About this column",
+      "description": "Ideas on ice. Tasks you've decided to shelve for now, not deleted, just paused until you're ready.",
+      "column": "icebox",
+      "order": -1000,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "tip-backlog",
+      "title": "Tips: Getting started",
+      "description": "Double-click any card to edit it. Drag cards between columns to change their status. Use the + button at the top to add new columns. Cards can be assigned to Projects to group related work together.",
+      "column": "backlog",
+      "order": -999,
+      "priority": "Med",
+      "labels": [
+        "guide"
+      ],
+      "tags": [
+        "sample"
+      ],
+      "project": "",
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-01",
+      "title": "Example: Set up automated email welcome sequence",
+      "description": "Create a 5-email drip sequence that triggers when a new subscriber joins. Include welcome, value delivery, and call-to-action emails.",
+      "column": "backlog",
+      "order": 0,
+      "project": "Email Automation System",
+      "priority": "Med",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-02",
+      "title": "Example: Build client onboarding checklist",
+      "description": "Design a step-by-step onboarding flow: intake form, welcome call scheduling, resource sharing, and first milestone.",
+      "column": "backlog",
+      "order": 1,
+      "project": "Client Onboarding Portal",
+      "priority": "Med",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-03",
+      "title": "Example: Generate weekly content calendar",
+      "description": "AI scans your RSS sources and drafts a content calendar every Monday with suggested topics, angles, and publishing dates.",
+      "column": "claude-code-todo",
+      "order": 0,
+      "project": "Content Strategy Hub",
+      "priority": "Med",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-04",
+      "title": "Example: Send automated invoice reminders",
+      "description": "Check Stripe for unpaid invoices older than 7 days, send polite reminder emails, and log follow-ups.",
+      "column": "claude-code-todo",
+      "order": 1,
+      "project": "Revenue Growth Tracker",
+      "priority": "High",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-05",
+      "title": "Example: Set up analytics dashboard",
+      "description": "Configure tracking for key metrics: website visits, email open rates, conversion rates, and revenue.",
+      "column": "doing",
+      "order": 0,
+      "project": "Infrastructure Setup",
+      "priority": "High",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-06",
+      "title": "Example: Record intro video for course",
+      "description": "The AI can't record video for you. Film a 3-minute welcome video introducing yourself and the program.",
+      "column": "human-must-do",
+      "order": 0,
+      "project": "Content Strategy Hub",
+      "priority": "High",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-07",
+      "title": "Example: Review automated email copy",
+      "description": "AI drafted 5 email templates. Read through them, adjust the tone, and approve before they go live.",
+      "column": "review",
+      "order": 0,
+      "project": "Email Automation System",
+      "priority": "Med",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-08",
+      "title": "Example: Configure domain and SSL",
+      "description": "Domain pointed, SSL certificate installed, all pages loading over HTTPS.",
+      "column": "done",
+      "order": 0,
+      "project": "Infrastructure Setup",
+      "priority": "High",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    },
+    {
+      "_id": "ex-09",
+      "title": "Example: Build mobile app version",
+      "description": "Future idea: create a React Native companion app for managing tasks on the go.",
+      "column": "icebox",
+      "order": 0,
+      "project": "Infrastructure Setup",
+      "priority": "Low",
+      "tags": [
+        "sample"
+      ],
+      "labels": [],
+      "createdAt": "2026-03-31T21:08:21.172445",
+      "updatedAt": "2026-03-31T21:08:21.172445"
+    }
+  ],
+  "projects": [
+    "Email Automation System",
+    "Client Onboarding Portal",
+    "Content Strategy Hub",
+    "Revenue Growth Tracker",
+    "Infrastructure Setup"
+  ],
+  "projectMeta": {
+    "Email Automation System": {
+      "description": "SAMPLE: Automated email sequences and drip campaigns for subscriber onboarding and conversion. Replace this with your own email automation project.",
+      "monetizationLevel": "High",
+      "status": "Active",
+      "timeToIncome": "Short-term",
+      "timeSaved": "High",
+      "monthlyIncome": 2500
+    },
+    "Client Onboarding Portal": {
+      "description": "SAMPLE: End-to-end onboarding flow for new coaching clients including intake, booking, and welcome automation. Customize this for your own client intake process.",
+      "monetizationLevel": "High",
+      "status": "Active",
+      "timeToIncome": "Immediate",
+      "timeSaved": "High",
+      "monthlyIncome": 4000
+    },
+    "Content Strategy Hub": {
+      "description": "SAMPLE: Blog posts, lead magnets, and content calendar for growing organic reach and authority. Adapt this to your own content marketing strategy.",
+      "monetizationLevel": "Medium",
+      "status": "Active",
+      "timeToIncome": "Medium",
+      "timeSaved": "Medium",
+      "monthlyIncome": 1200
+    },
+    "Revenue Growth Tracker": {
+      "description": "SAMPLE: Dashboard and workflows to track monthly recurring revenue, churn, and growth levers. Use this as a template for your own financial tracking.",
+      "monetizationLevel": "High",
+      "status": "Active",
+      "timeToIncome": "Short-term",
+      "timeSaved": "Medium",
+      "monthlyIncome": 3500
+    },
+    "Infrastructure Setup": {
+      "description": "SAMPLE: Core tech stack configuration including Stripe, booking system, CRM, and automation integrations. This is the foundation everything else runs on.",
+      "monetizationLevel": "Medium",
+      "status": "Active",
+      "timeToIncome": "Immediate",
+      "timeSaved": "High",
+      "monthlyIncome": 800
+    }
+  }
+}

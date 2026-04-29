@@ -1,0 +1,7 @@
+{
+  "title": "🐙 Set Up GitHub",
+  "priority": "Med",
+  "column": "backlog",
+  "labels": ["Guard Dog", "GitHub", "Infrastructure"],
+  "description": "## What\nSet up proper GitHub integration for the OpenClaw workspace — SSH keys, git config, and repository access.\n\n## Steps\n1. Configure git user identity:\n   - `git config --global user.name \"OpenClaw\"`\n   - `git config --global user.email \"openclaw@users.noreply.github.com\"`\n2. Generate SSH key if not present: `ssh-keygen -t ed25519`\n3. Add public key to GitHub account: https://github.com/settings/keys\n4. Test connection: `ssh -T git@github.com`\n5. Create GitHub personal access token (see companion card)\n6. Set up remote for workspace repo if needed\n\n## Why\n- Enables pushing code to GitHub\n- Enables Guard Dog and other agents to use authenticated GitHub API\n- Required for PR creation, issue tracking, and CI/CD\n\n## Acceptance Criteria\n- [ ] `ssh -T git@github.com` succeeds\n- [ ] `git push` works from workspace\n- [ ] GITHUB_TOKEN configured (see 'Install GitHub Token' card)"
+}

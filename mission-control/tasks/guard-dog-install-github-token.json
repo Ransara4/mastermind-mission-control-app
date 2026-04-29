@@ -1,0 +1,7 @@
+{
+  "title": "🔑 Install GitHub Token",
+  "priority": "Med",
+  "column": "backlog",
+  "labels": ["Guard Dog", "GitHub", "Infrastructure"],
+  "description": "## What\nAdd a GitHub personal access token to the environment so Guard Dog (and other agents) get 5,000 req/hr instead of 60 req/hr on the GitHub API.\n\n## Steps\n1. Go to https://github.com/settings/tokens\n2. Generate a new fine-grained personal access token\n3. Scopes needed: `public_repo` (read-only) — no write access needed\n4. Add to `~/.openclaw/.env`: `GITHUB_TOKEN=ghp_xxxxxxxxxxxx`\n5. Verify: `node ~/.openclaw/workspace/agents/guard-dog/src/index.js test`\n\n## Why\n- Guard Dog's reputation checker queries GitHub for repo stars, security issues, archived status\n- Unauthenticated limit is 60 req/hr — a batch scan of 30+ packages will hit this\n- With token: 5,000 req/hr — effectively unlimited for our use case\n\n## Acceptance Criteria\n- [ ] GITHUB_TOKEN set in .env\n- [ ] Guard Dog test shows GitHub checks passing\n- [ ] Nightly cron scan completes without GitHub rate limit errors"
+}

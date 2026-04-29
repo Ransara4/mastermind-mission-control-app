@@ -1,0 +1,7 @@
+{
+  "title": "🔧 Fix backup-with-mission-control.sh errors",
+  "priority": "High",
+  "column": "doing",
+  "labels": ["Backup", "Infrastructure", "Bug Fix"],
+  "description": "## What\nThe backup automation script is hitting two errors on scheduled runs:\n\n1. **Tar circular reference** — tar can't add archive to itself\n2. **Mission Control build missing** — missing `_document.js` in next.js build\n\n## Issues\n- grand-ot (code 1): `Can't add archive to itself`\n- crisp-ca (code 0): `ENOENT: /Users/openclaw/.openclaw/workspace/mission-control/.next/server/pages/_document.js`\n\n## Steps\n1. Review `~/.openclaw/workspace/ops/backup-with-mission-control.sh`\n2. Exclude backup destination from tar operations\n3. Ensure Mission Control is built before backing up\n4. Test backup run\n5. Verify no errors on next scheduled execution\n\n## Why\n- Backups are failing silently with partial completion\n- Affects system reliability and data protection\n- Scheduled to run, needs fixing before next cycle\n\n## Acceptance Criteria\n- [ ] Backup script runs without tar circular reference error\n- [ ] Mission Control build completes successfully\n- [ ] Full backup completes and stores without errors\n- [ ] Scheduled backup runs pass without exit codes 1 or errors"
+}

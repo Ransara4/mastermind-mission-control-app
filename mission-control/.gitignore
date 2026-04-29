@@ -1,0 +1,15 @@
+node_modules/
+.next/
+*.log
+*.cpuprofile
+.env*.local
+data/*.db
+convex.log
+nextjs-watchdog.log
+nextjs.log
+lib/whatsapp-config.json
+lib/emmie-whitelist.json
+lib/emmie-uncertain-emails.json
+lib/emmie-filing-rules.json
+lib/agent-registry.json
+crm-features-report.md
