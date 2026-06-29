@@ -11,5 +11,4 @@ lib/whatsapp-config.json
 lib/emmie-whitelist.json
 lib/emmie-uncertain-emails.json
 lib/emmie-filing-rules.json
-lib/agent-registry.json
 crm-features-report.md
