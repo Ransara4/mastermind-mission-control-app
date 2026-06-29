@@ -3,15 +3,20 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import { processes } from "../_state";
 import path from "path";
+
 const SHARED_ROOT = path.join(process.env.HOME ?? "", ".openclaw", "workspace", "agents", "shared");
-const { readLaneState } = require(path.join(SHARED_ROOT, "myos-lane.js"));
-const { readGeniePreferences } = require(path.join(SHARED_ROOT, "genie-preferences.js"));
+
+function tryRequire(filePath: string) {
+  try { return require(filePath); } catch { return null; }
+}
 
 export async function GET() {
   const slotA = processes.get("A");
   const slotB = processes.get("B");
-  const lane = readLaneState();
-  const preferences = readGeniePreferences();
+  const laneModule = tryRequire(path.join(SHARED_ROOT, "myos-lane.js"));
+  const prefModule = tryRequire(path.join(SHARED_ROOT, "genie-preferences.js"));
+  const lane = laneModule ? laneModule.readLaneState() : {};
+  const preferences = prefModule ? prefModule.readGeniePreferences() : {};
   const defaultProvider = preferences.provider || lane.apiProvider || "anthropic";
 
   return NextResponse.json({
