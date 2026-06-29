@@ -21,9 +21,11 @@ function getStripeKey(): string {
   return "";
 }
 
-const stripe = new Stripe(getStripeKey(), {
-  apiVersion: "2024-12-18.acacia" as Stripe.LatestApiVersion,
-});
+function getStripe(): Stripe | null {
+  const key = getStripeKey();
+  if (!key) return null;
+  return new Stripe(key, { apiVersion: "2024-12-18.acacia" as Stripe.LatestApiVersion });
+}
 
 function extractCouponInfo(promo: Stripe.PromotionCode): { couponId: string; couponName: string | null } {
   // Stripe PromotionCode has coupon directly, not nested under promotion
@@ -38,6 +40,8 @@ function extractCouponInfo(promo: Stripe.PromotionCode): { couponId: string; cou
 }
 
 export async function GET() {
+  const stripe = getStripe();
+  if (!stripe) return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
   try {
     const promos = await stripe.promotionCodes.list({ limit: 100 });
     const mapped = promos.data.map((p) => {
@@ -62,6 +66,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const stripe = getStripe();
+  if (!stripe) return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
   try {
     const body = await request.json();
 

@@ -22,9 +22,11 @@ function getStripeKey(): string {
   return "";
 }
 
-const stripe = new Stripe(getStripeKey(), {
-  apiVersion: "2024-12-18.acacia" as Stripe.LatestApiVersion,
-});
+function getStripe(): Stripe | null {
+  const key = getStripeKey();
+  if (!key) return null;
+  return new Stripe(key, { apiVersion: "2024-12-18.acacia" as Stripe.LatestApiVersion });
+}
 
 function emptyDashboard(): StripeDashboard {
   return {
@@ -54,6 +56,8 @@ function emptyDashboard(): StripeDashboard {
 }
 
 export async function GET(request: Request) {
+  const stripe = getStripe();
+  if (!stripe) return NextResponse.json(emptyDashboard());
   try {
     const { searchParams } = new URL(request.url);
     const timeRange = searchParams.get("timeRange") || "30d";

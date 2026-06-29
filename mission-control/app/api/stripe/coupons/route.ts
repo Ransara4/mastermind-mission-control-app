@@ -21,11 +21,15 @@ function getStripeKey(): string {
   return "";
 }
 
-const stripe = new Stripe(getStripeKey(), {
-  apiVersion: "2024-12-18.acacia" as Stripe.LatestApiVersion,
-});
+function getStripe(): Stripe | null {
+  const key = getStripeKey();
+  if (!key) return null;
+  return new Stripe(key, { apiVersion: "2024-12-18.acacia" as Stripe.LatestApiVersion });
+}
 
 export async function GET() {
+  const stripe = getStripe();
+  if (!stripe) return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
   try {
     const coupons = await stripe.coupons.list({ limit: 100 });
     const mapped = coupons.data.map((c) => ({
@@ -49,6 +53,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const stripe = getStripe();
+  if (!stripe) return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
   try {
     const body: CreateCouponRequest = await request.json();
 
@@ -102,6 +108,8 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const stripe = getStripe();
+  if (!stripe) return NextResponse.json({ error: "Stripe not configured" }, { status: 503 });
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
