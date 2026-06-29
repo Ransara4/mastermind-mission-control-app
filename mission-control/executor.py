@@ -52,7 +52,7 @@ def update_card(card_id: str, updates: dict):
 def run_claude(prompt: str) -> tuple:
     try:
         result = subprocess.run(
-            ["claude", "--dangerously-skip-permissions", "-p", prompt],
+            [r"C:\Users\Ronaldo\AppData\Roaming\npm\claude.cmd" if __import__('sys').platform == "win32" else "claude", "--dangerously-skip-permissions", "-p", prompt],
             capture_output=True,
             text=True,
             timeout=300,

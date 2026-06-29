@@ -7,10 +7,12 @@ const HOME = os.homedir();
 const EXECUTOR_PATH = path.join(process.cwd(), "executor.py");
 
 function isRunning(): boolean {
+  if (process.platform === "win32") return false;
   try {
     const out = execSync(`pgrep -f 'executor.py'`, {
       encoding: "utf-8",
       timeout: 3000,
+      windowsHide: true,
     });
     return out.trim().length > 0;
   } catch {
