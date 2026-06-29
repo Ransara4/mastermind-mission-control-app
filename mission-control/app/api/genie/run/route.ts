@@ -6,10 +6,16 @@ import path from "path";
 import { processes } from "../_state";
 
 const SHARED_ROOT = path.join(process.env.HOME ?? "", ".openclaw", "workspace", "agents", "shared");
-const { buildMyOSOperatorStartupContext } = require(path.join(SHARED_ROOT, "startup-context.js"));
-const { myosRun } = require(path.join(SHARED_ROOT, "llm-call.js"));
-const { readLaneState } = require(path.join(SHARED_ROOT, "myos-lane.js"));
-const { readGeniePreferences } = require(path.join(SHARED_ROOT, "genie-preferences.js"));
+
+function tryRequire(p: string) { try { return require(p); } catch { return null; } }
+function getShared() {
+  return {
+    buildMyOSOperatorStartupContext: tryRequire(path.join(SHARED_ROOT, "startup-context.js"))?.buildMyOSOperatorStartupContext ?? (() => ""),
+    myosRun: tryRequire(path.join(SHARED_ROOT, "llm-call.js"))?.myosRun ?? null,
+    readLaneState: tryRequire(path.join(SHARED_ROOT, "myos-lane.js"))?.readLaneState ?? (() => ({})),
+    readGeniePreferences: tryRequire(path.join(SHARED_ROOT, "genie-preferences.js"))?.readGeniePreferences ?? (() => ({})),
+  };
+}
 
 type Slot = "A" | "B";
 
@@ -147,6 +153,7 @@ function buildPromptForMode(prompt: string, mode: string) {
 }
 
 function buildGenieSystemPrompt() {
+  const { buildMyOSOperatorStartupContext } = getShared();
   return [
     "You are Genie running through Mission Control as a terminal-backed coding agent.",
     "Follow the same session rules, breadcrumbs, context files, and startup contract used by Uni, Claude, and Codex on this build.",
@@ -257,6 +264,7 @@ function maybeCommitChanges(prompt: string, cwd: string) {
 
 export async function POST(req: Request) {
   const body = await req.json();
+  const { myosRun, readLaneState, readGeniePreferences } = getShared();
   const savedPreferences = readGeniePreferences();
   const laneState = readLaneState();
   const {
@@ -338,6 +346,13 @@ export async function POST(req: Request) {
       controller.enqueue(encoder.encode(`data: ${meta}\n\n`));
 
       if (normalizedProvider === "anthropic") {
+        if (!myosRun) {
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "error", message: "Genie AI backend not configured on this server" })}\n\n`));
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: "done", exitCode: 1 })}\n\n`));
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+          controller.close();
+          return;
+        }
         let cancelled = false;
         const handle = {
           exitCode: null as number | null,

@@ -2,13 +2,16 @@ export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import path from "path";
+
 const SHARED_ROOT = path.join(process.env.HOME ?? "", ".openclaw", "workspace", "agents", "shared");
-const { readLaneState } = require(path.join(SHARED_ROOT, "myos-lane.js"));
-const { readGeniePreferences, writeGeniePreferences } = require(path.join(SHARED_ROOT, "genie-preferences.js"));
+
+function tryRequire(p: string) { try { return require(p); } catch { return null; } }
 
 function buildResponse() {
-  const lane = readLaneState();
-  const preferences = readGeniePreferences();
+  const laneModule = tryRequire(path.join(SHARED_ROOT, "myos-lane.js"));
+  const prefModule = tryRequire(path.join(SHARED_ROOT, "genie-preferences.js"));
+  const lane = laneModule ? laneModule.readLaneState() : {};
+  const preferences = prefModule ? prefModule.readGeniePreferences() : {};
   return {
     provider: preferences.provider || lane.apiProvider || "anthropic",
     model: preferences.model,
@@ -26,7 +29,10 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
-    const next = writeGeniePreferences(
+    const prefModule = tryRequire(path.join(SHARED_ROOT, "genie-preferences.js"));
+    const laneModule = tryRequire(path.join(SHARED_ROOT, "myos-lane.js"));
+    if (!prefModule) return NextResponse.json({ error: "Genie not configured on this server" }, { status: 503 });
+    const next = prefModule.writeGeniePreferences(
       {
         provider: body.provider,
         model: body.model,
@@ -36,7 +42,7 @@ export async function POST(req: Request) {
       { updatedBy: "mission-control-genie" }
     );
 
-    const lane = readLaneState();
+    const lane = laneModule ? laneModule.readLaneState() : {};
     return NextResponse.json({
       provider: next.provider || lane.apiProvider || "anthropic",
       model: next.model,
